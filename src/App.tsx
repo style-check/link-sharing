@@ -1,14 +1,14 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { HashRouter, Route, Routes } from "react-router-dom";
 import InvoiceBills from "./pages/InvoiceBills/InvoiceBills";
 
 function App() {
   return (
     <div>
-      <BrowserRouter>
+      <HashRouter>
         <Routes>
           <Route path="/bill/:invoice_id" element={<InvoiceBills />} />
         </Routes>
-      </BrowserRouter>
+      </HashRouter>
     </div>
   );
 }
