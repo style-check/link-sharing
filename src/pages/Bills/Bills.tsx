@@ -2,7 +2,21 @@ import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import InvoiceTemplate from "../../components/InvoiceTemplate";
-import type { SalesModules } from "../../types/sales";
+import type { SalesModules } from "../../types/Sales";
+import QuoteTemplate from "../../components/QuoteTemplate";
+
+const templates: Record<SalesModules, React.FC<any>> = {
+  quote: QuoteTemplate,
+  sales_order: InvoiceTemplate,
+  invoice: InvoiceTemplate,
+  credit_note: InvoiceTemplate,
+  package: InvoiceTemplate,
+  picklist: InvoiceTemplate,
+  return_exchange: InvoiceTemplate,
+  advance_payment: InvoiceTemplate,
+  invoice_payment: InvoiceTemplate,
+  delivery_challan: InvoiceTemplate,
+};
 
 const SalesBills: React.FC = () => {
   const { submodule_id, type } = useParams<{
@@ -14,8 +28,7 @@ const SalesBills: React.FC = () => {
   const [isVerified, setIsVerified] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [invoice, setInvoice] = useState<any | null>(null);
-  const [company, setCompany] = useState<any | null>(null);
+  const [data, setData] = useState<any | null>(null);
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   const handleVerify = async () => {
@@ -38,11 +51,9 @@ const SalesBills: React.FC = () => {
 
       if (res.data.success) {
         setIsVerified(true);
-        console.log(res.data);
-        setInvoice(res.data.invoice);
-        setCompany(res.data.company);
+        setData(res.data);
       } else {
-        setError("Invalid phone number or invoice not found.");
+        setError("Invalid phone number or data not found.");
       }
     } catch (err) {
       setError("Something went wrong. Try again.");
@@ -51,8 +62,24 @@ const SalesBills: React.FC = () => {
     }
   };
 
-  if (isVerified) {
-    return <InvoiceTemplate invoice={invoice} company={company} />;
+  if (type && !(type in templates)) {
+    return (
+      <div className="flex flex-col gap-4 items-center justify-center w-full min-h-screen">
+        <h1 className="text-5xl text-red-400 font-semibold">404 Not Found!</h1>
+        <p className="text-black font-semibold text-2xl">
+          Invalid Document Type
+        </p>
+      </div>
+    );
+  }
+
+  if (isVerified && type) {
+    const SelectedTemplate = templates[type];
+    return (
+      <SelectedTemplate
+        {...data} // pass invoice/quote data, company, etc.
+      />
+    );
   }
 
   return (

@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import SalesBills from "./pages/InvoiceBills/InvoiceBills";
+import SalesBills from "./pages/Bills/Bills";
 
 function App() {
   return (
