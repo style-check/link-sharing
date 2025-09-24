@@ -5,12 +5,13 @@ import InvoiceTemplate from "../../components/InvoiceTemplate";
 import type { SalesModules } from "../../types/Sales";
 import QuoteTemplate from "../../components/QuoteTemplate";
 import SalesOrderTemplate from "../../components/SalesOrderTemplate";
+import CreditNoteTemplate from "../../components/CreditNoteTemplate";
 
 const templates: Record<SalesModules, React.FC<any>> = {
   quote: QuoteTemplate,
   sales_order: SalesOrderTemplate,
   invoice: InvoiceTemplate,
-  credit_note: InvoiceTemplate,
+  credit_note: CreditNoteTemplate,
   package: InvoiceTemplate,
   picklist: InvoiceTemplate,
   return_exchange: InvoiceTemplate,

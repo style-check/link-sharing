@@ -15,7 +15,7 @@ type Props = {
   company: any;
 };
 
-const SalesOrderTemplate: React.FC<Props> = ({ submodule, company }) => {
+const CreditNoteTemplate: React.FC<Props> = ({ submodule, company }) => {
   return (
     <div className="min-h-screen bg-gray-100 py-6 px-2 sm:py-10 sm:px-4">
       <div className="max-w-4xl mx-auto bg-white border shadow-md p-4 sm:p-8 print:shadow-none print:border-none print:p-4">
@@ -44,39 +44,34 @@ const SalesOrderTemplate: React.FC<Props> = ({ submodule, company }) => {
           </div>
           <div className="text-left sm:text-right">
             <h2 className="text-xl sm:text-2xl font-bold uppercase tracking-wide">
-              Sales Order
+              Credit Note
             </h2>
-            <p className="text-sm">SO No: {submodule?.so_number}</p>
+            <p className="text-sm">CN No: {submodule?.cn_number}</p>
             <p className="text-sm">
-              Date: {formatDate(submodule?.so_timestamp)}
+              Date: {formatDate(submodule?.date_timestamp)}
             </p>
-            <p className="text-sm">
-              Status: {(submodule?.so_status).toUpperCase() || "-"}
-            </p>
-            <p className="text-sm">
-              Payment Terms: {submodule?.pmt_terms || "-"}
-            </p>
-            <p className="text-sm">
-              Payment Type: {submodule?.payment_type || "-"}
-            </p>
+            <p className="text-sm">Status: {submodule?.cn_status || "-"}</p>
+            {submodule?.warehouse_name && (
+              <p className="text-sm">Warehouse: {submodule?.warehouse_name}</p>
+            )}
           </div>
         </div>
 
-        {/* Customer & Staff */}
+        {/* Customer & Salesperson */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
           <div>
             <h3 className="font-semibold mb-1">Customer</h3>
             <p className="font-medium">{submodule?.customer_name}</p>
             <p className="text-sm text-gray-600">
-              Contact: {submodule?.phone_no || "-"}
+              Contact: {submodule?.phone_number || "-"}
             </p>
             <p className="text-sm text-gray-600">
               State: {submodule?.state_of_supply || "-"}
             </p>
           </div>
           <div>
-            <h3 className="font-semibold mb-1">Prepared By</h3>
-            <p className="font-medium">{submodule?.staff_name}</p>
+            <h3 className="font-semibold mb-1">Salesperson</h3>
+            <p className="font-medium">{submodule?.salesperson_name}</p>
             <p className="text-sm text-gray-600">
               Created by: {submodule?.created_by?.owner_name}
             </p>
@@ -98,10 +93,7 @@ const SalesOrderTemplate: React.FC<Props> = ({ submodule, company }) => {
                   "Tax %",
                   "Total",
                 ].map((h) => (
-                  <th
-                    key={h}
-                    className="border border-gray-300 p-2 text-center"
-                  >
+                  <th key={h} className="border border-gray-300 p-2 text-left">
                     {h}
                   </th>
                 ))}
@@ -139,18 +131,18 @@ const SalesOrderTemplate: React.FC<Props> = ({ submodule, company }) => {
                   <td className="border border-gray-300 p-2 text-center">
                     {item.quantity}
                   </td>
-                  <td className="border border-gray-300 p-2 text-center">
+                  <td className="border border-gray-300 p-2 text-right">
                     ₹{item.mrp}
                   </td>
-                  <td className="border border-gray-300 p-2 text-center">
+                  <td className="border border-gray-300 p-2 text-right">
                     {item.discount}%
                   </td>
                   <td className="border border-gray-300 p-2 text-center">
                     {item.tax}%
                   </td>
-                  <td className="border border-gray-300 p-2 text-center">
+                  <td className="border border-gray-300 p-2 text-right">
                     ₹
-                    {item.total ||
+                    {item.total ??
                       (() => {
                         const discountedPrice =
                           item.mrp * (1 - (item.discount || 0) / 100);
@@ -186,12 +178,12 @@ const SalesOrderTemplate: React.FC<Props> = ({ submodule, company }) => {
               <span>₹{submodule?.shipping_charges || 0}</span>
             </div>
             <div className="flex justify-between p-2 border-b">
-              <span>Packing</span>
-              <span>₹{submodule?.packing_charges || 0}</span>
+              <span>Packaging</span>
+              <span>₹{submodule?.packaging_charges || 0}</span>
             </div>
             <div className="flex justify-between p-2 border-b">
-              <span>Adjustments</span>
-              <span>₹{submodule?.adjustments || 0}</span>
+              <span>Adjustment</span>
+              <span>₹{submodule?.adjustment_charges || 0}</span>
             </div>
             {submodule?.round_off && (
               <div className="flex justify-between p-2 border-b">
@@ -203,16 +195,10 @@ const SalesOrderTemplate: React.FC<Props> = ({ submodule, company }) => {
               <span>Grand Total</span>
               <span>₹{submodule?.grand_total}</span>
             </div>
-            {submodule?.received_amount && (
+            {submodule?.credits_available && (
               <div className="flex justify-between p-2">
-                <span>Received</span>
-                <span>₹{submodule?.received_amount}</span>
-              </div>
-            )}
-            {submodule?.balance_due && (
-              <div className="flex justify-between p-2 border-t font-semibold">
-                <span>Balance Due</span>
-                <span>₹{submodule?.balance_due}</span>
+                <span>Credits Available</span>
+                <span>₹{submodule?.credits_available}</span>
               </div>
             )}
           </div>
@@ -235,7 +221,7 @@ const SalesOrderTemplate: React.FC<Props> = ({ submodule, company }) => {
             onClick={() => window.print()}
             className="px-6 py-2 cursor-pointer border rounded text-sm font-medium hover:bg-gray-100"
           >
-            Print Sales Order
+            Print Credit Note
           </button>
         </div>
       </div>
@@ -243,4 +229,4 @@ const SalesOrderTemplate: React.FC<Props> = ({ submodule, company }) => {
   );
 };
 
-export default SalesOrderTemplate;
+export default CreditNoteTemplate;
