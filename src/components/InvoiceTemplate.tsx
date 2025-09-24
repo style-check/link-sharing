@@ -1,17 +1,17 @@
 import React from "react";
 
 type Props = {
-  invoice: any; // later we can create a TypeScript type for your full schema
+  submodule: any; // later we can create a TypeScript type for your full schema
   company: any;
 };
 
-const InvoiceTemplate: React.FC<Props> = ({ invoice, company }) => {
+const InvoiceTemplate: React.FC<Props> = ({ submodule, company }) => {
   // Convert string numbers to actual numbers
-  const grandTotal = Number(invoice.grand_total);
-  const subtotal = Number(invoice.subtotal);
-  const totalTax = Number(invoice.total_tax);
-  const receivedAmount = Number(invoice.received_amount);
-  const totalQuantity = Number(invoice.total_quantity);
+  const grandTotal = Number(submodule.grand_total);
+  const subtotal = Number(submodule.subtotal);
+  const totalTax = Number(submodule.total_tax);
+  const receivedAmount = Number(submodule.received_amount);
+  const totalQuantity = Number(submodule.total_quantity);
   const { business_name, gst_number, business_logo } = company;
 
   return (
@@ -28,7 +28,7 @@ const InvoiceTemplate: React.FC<Props> = ({ invoice, company }) => {
             <h1 className="text-2xl font-bold text-gray-800">
               {business_name}
             </h1>
-            <p className="text-lg text-gray-600">{invoice.warehouse_name}</p>
+            <p className="text-lg text-gray-600">{submodule.warehouse_name}</p>
           </div>
         </div>
         <div className="text-right">
@@ -44,29 +44,29 @@ const InvoiceTemplate: React.FC<Props> = ({ invoice, company }) => {
           <div>
             <p>
               <span className="font-medium">Invoice No:</span>{" "}
-              {invoice.inv_number}
+              {submodule.inv_number}
             </p>
             <p>
               <span className="font-medium">Date:</span>{" "}
-              {new Date(invoice.date_timestamp).toLocaleDateString()}
+              {new Date(submodule.date_timestamp).toLocaleDateString()}
             </p>
           </div>
           <div className="text-right">
             <p>
               <span className="font-medium">Customer ID:</span>{" "}
-              {invoice.customer_id}
+              {submodule.customer_id}
             </p>
             <p>
               <span className="font-medium">Cashier:</span>{" "}
-              {invoice.salesperson_name}
+              {submodule.salesperson_name}
             </p>
             <p>
               <span className="font-medium">Customer Name:</span>{" "}
-              {invoice.customer_name}
+              {submodule.customer_name}
             </p>
             <p>
               <span className="font-medium">Mobile No:</span>{" "}
-              {invoice.phone_number}
+              {submodule.phone_number}
             </p>
           </div>
         </div>
@@ -100,7 +100,7 @@ const InvoiceTemplate: React.FC<Props> = ({ invoice, company }) => {
           </tr>
         </thead>
         <tbody>
-          {invoice.product_info.map((it: any, i: number) => {
+          {submodule.product_info.map((it: any, i: number) => {
             const taxableAmount = (it.mrp - it.discount) * it.quantity;
             const netAmount = taxableAmount + (taxableAmount * it.tax) / 100;
             return (
@@ -135,7 +135,7 @@ const InvoiceTemplate: React.FC<Props> = ({ invoice, company }) => {
       {/* Tax Breakdown */}
       <div className="mt-4 text-lg">
         <p className="font-medium text-gray-700">A) CGST@6% SGST@6%</p>
-        {invoice.product_info.map((it: any, i: number) => {
+        {submodule.product_info.map((it: any, i: number) => {
           const taxAmount =
             (it.mrp - it.discount) * it.quantity * (it.tax / 100);
           return (
@@ -145,7 +145,7 @@ const InvoiceTemplate: React.FC<Props> = ({ invoice, company }) => {
           );
         })}
         <p className="font-medium text-gray-700 mt-2">C) CGST@6% SGST@6%</p>
-        {invoice.product_info.map((it: any, i: number) => {
+        {submodule.product_info.map((it: any, i: number) => {
           const taxAmount =
             (it.mrp - it.discount) * it.quantity * (it.tax / 100);
           return (
@@ -242,7 +242,7 @@ const InvoiceTemplate: React.FC<Props> = ({ invoice, company }) => {
       <div className="mt-6 border-t-2 border-gray-200 pt-4">
         <p className="text-lg font-semibold text-gray-700">PayTm</p>
         <p className="text-lg">
-          Tender Detail: {receivedAmount.toFixed(2)} {invoice.payment_type}
+          Tender Detail: {receivedAmount.toFixed(2)} {submodule.payment_type}
         </p>
         <p className="text-lg font-medium">
           Total Received Amount: {grandTotal.toFixed(2)}
@@ -254,8 +254,8 @@ const InvoiceTemplate: React.FC<Props> = ({ invoice, company }) => {
       <div className="mt-8 text-center text-lg text-gray-600">
         <p className="font-semibold">*** THANK YOU FOR SHOPPING ***</p>
         <p className="mt-2">
-          Terms & Conditions: {invoice.return_exchange_terms} within{" "}
-          {invoice.return_exchange_window} days of invoice date.
+          Terms & Conditions: {submodule.return_exchange_terms} within{" "}
+          {submodule.return_exchange_window} days of submodule date.
         </p>
       </div>
     </div>
