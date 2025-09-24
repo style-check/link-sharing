@@ -56,7 +56,11 @@ const SalesBills: React.FC = () => {
         setError("Invalid phone number or data not found.");
       }
     } catch (err) {
-      setError("Something went wrong. Try again.");
+      if (axios.isAxiosError(err) && err.response) {
+        setError(err.response.data.message || "An Error Occured");
+      } else {
+        setError("Something went wrong. Try again.");
+      }
     } finally {
       setLoading(false);
     }
