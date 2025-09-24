@@ -7,6 +7,7 @@ import QuoteTemplate from "../../components/QuoteTemplate";
 import SalesOrderTemplate from "../../components/SalesOrderTemplate";
 import CreditNoteTemplate from "../../components/CreditNoteTemplate";
 import DeliveryChallanTemplate from "../../components/DeliveryChallan";
+import InvoicePaymentTemplate from "../../components/InvoicePayment";
 
 const templates: Record<SalesModules, React.FC<any>> = {
   quote: QuoteTemplate,
@@ -17,7 +18,7 @@ const templates: Record<SalesModules, React.FC<any>> = {
   picklist: InvoiceTemplate,
   return_exchange: InvoiceTemplate,
   advance_payment: InvoiceTemplate,
-  invoice_payment: InvoiceTemplate,
+  invoice_payment: InvoicePaymentTemplate,
   delivery_challan: DeliveryChallanTemplate,
 };
 
