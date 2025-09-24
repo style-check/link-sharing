@@ -15,21 +15,21 @@ type Props = {
   company: any;
 };
 
-const QuoteTemplate: React.FC<Props> = ({ submodule, company }) => {
+const SalesOrderTemplate: React.FC<Props> = ({ submodule, company }) => {
   return (
     <div className="min-h-screen bg-gray-100 py-6 px-2 sm:py-10 sm:px-4">
       <div className="max-w-4xl mx-auto bg-white border shadow-md p-4 sm:p-8 print:shadow-none print:border-none print:p-4">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start border-b pb-4 mb-6 gap-4">
-          <div className="flex flex-col sm:flex-row gap-4">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b pb-4 mb-6 gap-4">
+          <div className="flex gap-4">
             {company?.business_logo && (
               <img
                 src={company.business_logo}
                 alt="Logo"
-                className="w-16 h-16 sm:w-20 sm:h-20 object-contain mx-auto sm:mx-0"
+                className="w-16 h-16 sm:w-20 sm:h-20 object-contain"
               />
             )}
-            <div className="text-center sm:text-left">
+            <div>
               <h1 className="text-xl sm:text-2xl font-bold">
                 {company?.brand_name}
               </h1>
@@ -42,16 +42,22 @@ const QuoteTemplate: React.FC<Props> = ({ submodule, company }) => {
               </p>
             </div>
           </div>
-          <div className="text-center sm:text-right">
+          <div className="text-left sm:text-right">
             <h2 className="text-xl sm:text-2xl font-bold uppercase tracking-wide">
-              Quote
+              Sales Order
             </h2>
-            <p className="text-sm">Quote No: {submodule?.quote_number}</p>
+            <p className="text-sm">SO No: {submodule?.so_number}</p>
             <p className="text-sm">
-              Date: {formatDate(submodule?.quote_timestamp)}
+              Date: {formatDate(submodule?.so_timestamp)}
             </p>
             <p className="text-sm">
-              Expiry: {formatDate(submodule?.expiry_date)}
+              Status: {(submodule?.so_status).toUpperCase() || "-"}
+            </p>
+            <p className="text-sm">
+              Payment Terms: {submodule?.pmt_terms || "-"}
+            </p>
+            <p className="text-sm">
+              Payment Type: {submodule?.payment_type || "-"}
             </p>
           </div>
         </div>
@@ -59,13 +65,13 @@ const QuoteTemplate: React.FC<Props> = ({ submodule, company }) => {
         {/* Customer & Staff */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
           <div>
-            <h3 className="font-semibold mb-1">Estimate For</h3>
+            <h3 className="font-semibold mb-1">Customer</h3>
             <p className="font-medium">{submodule?.customer_name}</p>
             <p className="text-sm text-gray-600">
-              Contact: {submodule?.phone_no}
+              Contact: {submodule?.phone_no || "-"}
             </p>
             <p className="text-sm text-gray-600">
-              State: {submodule?.state_of_supply}
+              State: {submodule?.state_of_supply || "-"}
             </p>
           </div>
           <div>
@@ -78,8 +84,8 @@ const QuoteTemplate: React.FC<Props> = ({ submodule, company }) => {
         </div>
 
         {/* Product Table */}
-        <div className="overflow-x-auto mb-6">
-          <table className="w-full text-xs sm:text-sm border border-gray-300">
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm border border-gray-300 mb-6 min-w-[600px]">
             <thead className="bg-gray-100">
               <tr>
                 {[
@@ -94,7 +100,7 @@ const QuoteTemplate: React.FC<Props> = ({ submodule, company }) => {
                 ].map((h) => (
                   <th
                     key={h}
-                    className="border border-gray-300 p-2 text-left whitespace-nowrap"
+                    className="border border-gray-300 p-2 text-center"
                   >
                     {h}
                   </th>
@@ -111,10 +117,21 @@ const QuoteTemplate: React.FC<Props> = ({ submodule, company }) => {
                     {idx + 1}
                   </td>
                   <td className="border border-gray-300 p-2">
-                    <p className="font-medium">{item.name}</p>
-                    <p className="text-[10px] sm:text-xs text-gray-500">
-                      {item.color} | {item.size}
-                    </p>
+                    <div className="flex items-center gap-2">
+                      {item.image_path && (
+                        <img
+                          src={item.image_path}
+                          alt={item.name}
+                          className="w-10 h-10 object-cover border rounded"
+                        />
+                      )}
+                      <div>
+                        <p className="font-medium">{item.name}</p>
+                        <p className="text-xs text-gray-500">
+                          {item.color} | {item.size}
+                        </p>
+                      </div>
+                    </div>
                   </td>
                   <td className="border border-gray-300 p-2 text-center">
                     {item.sku_code}
@@ -122,18 +139,18 @@ const QuoteTemplate: React.FC<Props> = ({ submodule, company }) => {
                   <td className="border border-gray-300 p-2 text-center">
                     {item.quantity}
                   </td>
-                  <td className="border border-gray-300 p-2 text-right">
+                  <td className="border border-gray-300 p-2 text-center">
                     ₹{item.mrp}
                   </td>
-                  <td className="border border-gray-300 p-2 text-right">
+                  <td className="border border-gray-300 p-2 text-center">
                     {item.discount}%
                   </td>
                   <td className="border border-gray-300 p-2 text-center">
                     {item.tax}%
                   </td>
-                  <td className="border border-gray-300 p-2 text-right">
+                  <td className="border border-gray-300 p-2 text-center">
                     ₹
-                    {item.total ??
+                    {item.total ||
                       (() => {
                         const discountedPrice =
                           item.mrp * (1 - (item.discount || 0) / 100);
@@ -186,23 +203,27 @@ const QuoteTemplate: React.FC<Props> = ({ submodule, company }) => {
               <span>Grand Total</span>
               <span>₹{submodule?.grand_total}</span>
             </div>
-            <div className="flex justify-between p-2">
-              <span>Received</span>
-              <span>₹{submodule?.received_amount}</span>
-            </div>
-            <div className="flex justify-between p-2 border-t font-semibold">
-              <span>Balance Due</span>
-              <span>₹{submodule?.balance_due}</span>
-            </div>
+            {submodule?.received_amount && (
+              <div className="flex justify-between p-2">
+                <span>Received</span>
+                <span>₹{submodule?.received_amount}</span>
+              </div>
+            )}
+            {submodule?.balance_due && (
+              <div className="flex justify-between p-2 border-t font-semibold">
+                <span>Balance Due</span>
+                <span>₹{submodule?.balance_due}</span>
+              </div>
+            )}
           </div>
         </div>
 
         {/* Footer */}
         <div className="mt-10 flex flex-col sm:flex-row justify-between items-start sm:items-end gap-6">
           <div className="text-sm text-gray-600 max-w-md">
-            <p>{submodule?.description}</p>
+            <p>{submodule?.description || ""}</p>
           </div>
-          <div className="text-right w-full sm:w-auto">
+          <div className="text-right">
             <p className="font-semibold">For: {company?.brand_name}</p>
             <p className="mt-16 border-t inline-block">Authorized Signatory</p>
           </div>
@@ -214,7 +235,7 @@ const QuoteTemplate: React.FC<Props> = ({ submodule, company }) => {
             onClick={() => window.print()}
             className="px-6 py-2 cursor-pointer border rounded text-sm font-medium hover:bg-gray-100"
           >
-            Print Quote
+            Print Sales Order
           </button>
         </div>
       </div>
@@ -222,4 +243,4 @@ const QuoteTemplate: React.FC<Props> = ({ submodule, company }) => {
   );
 };
 
-export default QuoteTemplate;
+export default SalesOrderTemplate;
