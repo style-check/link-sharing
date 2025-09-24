@@ -6,6 +6,7 @@ import type { SalesModules } from "../../types/Sales";
 import QuoteTemplate from "../../components/QuoteTemplate";
 import SalesOrderTemplate from "../../components/SalesOrderTemplate";
 import CreditNoteTemplate from "../../components/CreditNoteTemplate";
+import DeliveryChallanTemplate from "../../components/DeliveryChallan";
 
 const templates: Record<SalesModules, React.FC<any>> = {
   quote: QuoteTemplate,
@@ -17,7 +18,7 @@ const templates: Record<SalesModules, React.FC<any>> = {
   return_exchange: InvoiceTemplate,
   advance_payment: InvoiceTemplate,
   invoice_payment: InvoiceTemplate,
-  delivery_challan: InvoiceTemplate,
+  delivery_challan: DeliveryChallanTemplate,
 };
 
 const SalesBills: React.FC = () => {
