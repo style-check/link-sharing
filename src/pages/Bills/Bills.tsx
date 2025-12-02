@@ -11,6 +11,13 @@ import InvoicePaymentTemplate from "../../components/InvoicePaymentTemplate";
 import AdvancePaymentTemplate from "../../components/AdvancePaymentTemplate";
 import ReturnExchangeTemplate from "../../components/REXTemplate";
 
+type ShareSaleResponse = {
+  success: boolean;
+  // The actual payload shape can be refined later;
+  // for now we keep it flexible to not break templates.
+  [key: string]: any;
+};
+
 const templates: Record<SalesModules, React.FC<any>> = {
   quote: QuoteTemplate,
   sales_order: SalesOrderTemplate,
@@ -32,17 +39,19 @@ const SalesBills: React.FC = () => {
 
   const [searchParams] = useSearchParams();
   const phone = searchParams.get("phone") || "";
-  const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState<
+    "idle" | "loading" | "success" | "not_found" | "error"
+  >("idle");
   const [error, setError] = useState<string | null>(null);
-  const [data, setData] = useState<any | null>(null);
+  const [data, setData] = useState<ShareSaleResponse | null>(null);
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
     const fetchBill = async () => {
-      if (!type || !submodule_id) return;
+      if (!type || !submodule_id || !phone) return;
 
       try {
-        setLoading(true);
+        setStatus("loading");
         setError(null);
 
         const res = await axios.get(
@@ -55,24 +64,30 @@ const SalesBills: React.FC = () => {
         );
 
         if (res.data.success) {
+          setStatus("success");
           setData(res.data);
         } else {
           // Treat as not-found / 404 for this invoice/type
-          setError("__NOT_FOUND__");
+          setStatus("not_found");
         }
       } catch (err) {
         if (axios.isAxiosError(err) && err.response) {
           if (err.response.status === 404) {
             // Explicit 404 from backend
-            setError("__NOT_FOUND__");
+            setStatus("not_found");
           } else {
+            setStatus("error");
             setError(err.response.data.message || "An Error Occured");
           }
         } else {
+          setStatus("error");
           setError("Something went wrong. Try again.");
         }
       } finally {
-        setLoading(false);
+        if (status === "loading") {
+          // Avoid overriding a more specific status set above
+          setStatus((prev) => (prev === "loading" ? "idle" : prev));
+        }
       }
     };
 
@@ -90,7 +105,18 @@ const SalesBills: React.FC = () => {
     );
   }
 
-  if (loading) {
+  if (!type || !submodule_id || !phone) {
+    return (
+      <div className="flex flex-col gap-4 items-center justify-center w-full min-h-screen">
+        <h1 className="text-4xl text-red-400 font-semibold">Invalid Link</h1>
+        <p className="text-black font-semibold text-xl">
+          This link is incomplete or missing required information.
+        </p>
+      </div>
+    );
+  }
+
+  if (status === "loading") {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen">
         <p className="text-lg font-semibold">Loading bill...</p>
@@ -98,7 +124,7 @@ const SalesBills: React.FC = () => {
     );
   }
 
-  if (error === "__NOT_FOUND__") {
+  if (status === "not_found") {
     return (
       <div className="flex flex-col gap-4 items-center justify-center w-full min-h-screen">
         <h1 className="text-5xl text-red-400 font-semibold">404 Not Found!</h1>
@@ -109,7 +135,7 @@ const SalesBills: React.FC = () => {
     );
   }
 
-  if (error) {
+  if (status === "error" && error) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen p-4">
         <div className="w-full max-w-md bg-white shadow-lg rounded-2xl p-6">
@@ -120,7 +146,7 @@ const SalesBills: React.FC = () => {
     );
   }
 
-  if (data && type) {
+  if (status === "success" && data && type) {
     const SelectedTemplate = templates[type];
     return (
       <SelectedTemplate
