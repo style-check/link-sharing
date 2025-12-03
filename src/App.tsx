@@ -1,14 +1,14 @@
-import { HashRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import SalesBills from "./pages/Bills/Bills";
 
 function App() {
   return (
     <div>
-      <HashRouter>
+      <BrowserRouter>
         <Routes>
           <Route path="/bill/:type/:submodule_id" element={<SalesBills />} />
         </Routes>
-      </HashRouter>
+      </BrowserRouter>
     </div>
   );
 }
