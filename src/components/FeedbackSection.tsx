@@ -19,19 +19,6 @@ const FeedbackSection: React.FC = () => {
     console.log("Feedback submitted:", feedback);
   };
 
-  const getFeedbackEmoji = (type: FeedbackType) => {
-    switch (type) {
-      case "happy":
-        return "😊";
-      case "neutral":
-        return "😐";
-      case "sad":
-        return "😞";
-      default:
-        return null;
-    }
-  };
-
   const getFeedbackColor = (type: FeedbackType) => {
     switch (type) {
       case "happy":
