@@ -1,6 +1,8 @@
 import React from "react";
 import FeedbackSection from "./FeedbackSection";
 import AdCarousel from "./AdCarousel";
+import BillingPoweredBy from "./BillingPoweredBy";
+import DownloadBillButton from "./DownloadBillButton";
 
 type Props = {
   submodule: any; // later we can create a TypeScript type for your full schema
@@ -73,7 +75,8 @@ const InvoiceTemplate: React.FC<Props> = ({ submodule, company }) => {
   };
 
   return (
-    <div className="w-full max-w-[350px] mx-auto bg-white p-3 sm:p-4 text-[10px] sm:text-xs font-sans">
+    <>
+    <div className="w-full max-w-[350px] mx-auto bg-white p-3 sm:p-4 text-[10px] sm:text-xs font-sans pb-20 sm:pb-24">
       {/* Ad Carousel */}
       <div className="mb-4">
         <AdCarousel autoPlayInterval={5000} />
@@ -385,7 +388,14 @@ const InvoiceTemplate: React.FC<Props> = ({ submodule, company }) => {
           <p className="mb-1">{submodule.additional_terms}</p>
         )}
       </div>
+
+      {/* Digital Billing Powered By */}
+      <BillingPoweredBy />
     </div>
+    
+    {/* Sticky Download Button - Outside main container for proper sticky positioning */}
+    <DownloadBillButton companyName={business_name} maxWidth="350px" />
+    </>
   );
 };
 
