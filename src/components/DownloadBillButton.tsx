@@ -4,12 +4,14 @@ type Props = {
   onDownload?: () => void;
   companyName?: string;
   maxWidth?: string; // To match the bill width
+  buttonText?: string; // Custom button text (e.g., "Download Bill", "Download Quote")
 };
 
 const DownloadBillButton: React.FC<Props> = ({
   onDownload,
-  companyName = "Company Name",
+  companyName = "zudio",
   maxWidth = "350px",
+  buttonText = "Download Bill",
 }) => {
   const handleDownload = () => {
     if (onDownload) {
@@ -35,7 +37,7 @@ const DownloadBillButton: React.FC<Props> = ({
           onClick={handleDownload}
           className="flex-1 bg-green-600 hover:bg-green-700 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors text-xs sm:text-sm uppercase tracking-wide shadow-md"
         >
-          Download Bill
+          {buttonText}
         </button>
       </div>
     </div>

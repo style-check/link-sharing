@@ -393,8 +393,12 @@ const InvoiceTemplate: React.FC<Props> = ({ submodule, company }) => {
       <BillingPoweredBy />
     </div>
     
-    {/* Sticky Download Button - Outside main container for proper sticky positioning */}
-    <DownloadBillButton companyName={business_name} maxWidth="350px" />
+      {/* Sticky Download Button - Outside main container for proper sticky positioning */}
+      <DownloadBillButton
+        companyName={business_name}
+        maxWidth="350px"
+        buttonText="Download Bill"
+      />
     </>
   );
 };
