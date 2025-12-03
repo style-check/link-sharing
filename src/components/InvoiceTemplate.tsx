@@ -1,5 +1,6 @@
 import React from "react";
 import FeedbackSection from "./FeedbackSection";
+import AdCarousel from "./AdCarousel";
 
 type Props = {
   submodule: any; // later we can create a TypeScript type for your full schema
@@ -73,6 +74,11 @@ const InvoiceTemplate: React.FC<Props> = ({ submodule, company }) => {
 
   return (
     <div className="w-full max-w-[350px] mx-auto bg-white p-3 sm:p-4 text-[10px] sm:text-xs font-sans">
+      {/* Ad Carousel */}
+      <div className="mb-4">
+        <AdCarousel autoPlayInterval={5000} />
+      </div>
+
       {/* Company Header */}
       <div className="border-b border-dashed border-gray-400 pb-2 mb-2">
         <div className="text-center mb-1">
