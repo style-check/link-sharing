@@ -8,7 +8,7 @@ type Props = {
 
 const DownloadBillButton: React.FC<Props> = ({
   onDownload,
-  companyName = "zudio",
+  companyName = "Company Name",
   maxWidth = "350px",
 }) => {
   const handleDownload = () => {
@@ -21,11 +21,11 @@ const DownloadBillButton: React.FC<Props> = ({
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 shadow-lg p-3 sm:p-4">
-      <div
-        className="mx-auto flex items-center justify-between gap-3"
-        style={{ maxWidth }}
-      >
+    <div
+      className="fixed bottom-0 left-1/2 -translate-x-1/2 z-50 bg-white border-t border-gray-200 shadow-lg p-3 sm:p-4 no-print"
+      style={{ width: maxWidth, maxWidth: "100%" }}
+    >
+      <div className="flex items-center justify-between gap-3 w-full">
         <div className="flex items-center gap-2">
           <span className="text-xs sm:text-sm font-medium text-gray-700 lowercase">
             {companyName.toLowerCase()}
@@ -43,4 +43,3 @@ const DownloadBillButton: React.FC<Props> = ({
 };
 
 export default DownloadBillButton;
-

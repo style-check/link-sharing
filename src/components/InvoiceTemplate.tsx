@@ -76,9 +76,9 @@ const InvoiceTemplate: React.FC<Props> = ({ submodule, company }) => {
 
   return (
     <>
-    <div className="w-full max-w-[350px] mx-auto bg-white p-3 sm:p-4 text-[10px] sm:text-xs font-sans pb-20 sm:pb-24">
+    <div className="invoice-container w-full max-w-[350px] mx-auto bg-white p-3 sm:p-4 text-[10px] sm:text-xs font-sans pb-20 sm:pb-24">
       {/* Ad Carousel */}
-      <div className="mb-4">
+      <div className="mb-4 no-print">
         <AdCarousel autoPlayInterval={5000} />
       </div>
 
@@ -153,8 +153,8 @@ const InvoiceTemplate: React.FC<Props> = ({ submodule, company }) => {
       </div>
 
       {/* Items Table - Mobile Optimized */}
-      <div className="mb-3 overflow-x-auto">
-        <table className="w-full text-[9px] sm:text-[10px] border-collapse min-w-full">
+      <div className="mb-3 overflow-x-auto print:overflow-visible">
+        <table className="w-full text-[9px] sm:text-[10px] border-collapse min-w-full print:min-w-0 print:table-auto">
           <thead>
             <tr className="border-b border-gray-300">
               <th className="py-1 px-1 text-left font-semibold text-gray-900">
@@ -266,8 +266,8 @@ const InvoiceTemplate: React.FC<Props> = ({ submodule, company }) => {
       </div>
 
       {/* Tax Details Table - Mobile Optimized */}
-      <div className="mb-3 overflow-x-auto">
-        <table className="w-full text-[9px] sm:text-[10px] border-collapse min-w-full">
+      <div className="mb-3 overflow-x-auto print:overflow-visible">
+        <table className="w-full text-[9px] sm:text-[10px] border-collapse min-w-full print:min-w-0 print:table-auto">
           <thead>
             <tr className="border-b-2 border-gray-300 bg-gray-50">
               <th className="py-1 px-1 text-left font-semibold text-gray-900">

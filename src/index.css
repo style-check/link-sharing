@@ -27,3 +27,77 @@
 .animate-slide-up {
   animation: slide-up 0.3s ease-out;
 }
+
+/* Hide elements when printing */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  /* Prevent horizontal scroll when printing */
+  @page {
+    size: A4 portrait;
+    margin: 0.5cm;
+  }
+  
+  body {
+    overflow-x: hidden !important;
+    width: 100% !important;
+  }
+  
+  * {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  
+  /* Ensure invoice container fits */
+  .invoice-container {
+    max-width: 100% !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0.5cm !important;
+  }
+  
+  /* Fix tables to fit within page */
+  table {
+    width: 100% !important;
+    table-layout: fixed !important;
+    font-size: 8px !important;
+    border-collapse: collapse !important;
+  }
+  
+  th, td {
+    padding: 3px 2px !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    hyphens: auto !important;
+    font-size: 8px !important;
+  }
+  
+  /* Set specific column widths for better fit */
+  th:nth-child(1), td:nth-child(1) { width: 12% !important; } /* Item */
+  th:nth-child(2), td:nth-child(2) { width: 10% !important; } /* Price */
+  th:nth-child(3), td:nth-child(3) { width: 6% !important; }  /* Qty */
+  th:nth-child(4), td:nth-child(4) { width: 8% !important; }  /* Disc */
+  th:nth-child(5), td:nth-child(5) { width: 10% !important; } /* Net */
+  th:nth-child(6), td:nth-child(6) { width: 28% !important; } /* Desc */
+  th:nth-child(7), td:nth-child(7) { width: 10% !important; } /* HSN */
+  th:nth-child(8), td:nth-child(8) { width: 16% !important; } /* Taxable */
+  
+  /* Remove overflow scrollbars */
+  .overflow-x-auto {
+    overflow-x: visible !important;
+    overflow: visible !important;
+  }
+  
+  /* Ensure all content is visible */
+  .break-words {
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+  }
+  
+  /* Ensure invoice fits on page */
+  .invoice-container {
+    page-break-inside: avoid !important;
+  }
+}
